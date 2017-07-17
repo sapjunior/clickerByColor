@@ -16,6 +16,8 @@ namespace clickerByColor
         private VideoCapture fromWebcam;
         private Mat currentVideoFrame,resizedCurrentVideoFrame;
         private int currentInterestedColors = 0;
+        private List<RangeF> interestedColors = new List<RangeF>();
+        private List<int> blobCount = new List<int>();
         public mainForm()
         {
             InitializeComponent();
@@ -25,7 +27,7 @@ namespace clickerByColor
             {
                 try
                 {
-                    fromWebcam = new VideoCapture();
+                    fromWebcam = new VideoCapture(0);
                     currentVideoFrame = new Mat();
                     resizedCurrentVideoFrame = new Mat();
                 }
@@ -57,20 +59,35 @@ namespace clickerByColor
         private void addInterestedColorBtn_Click(object sender, EventArgs e)
         {
             // Open new Window
-
-            // Return & Add Color to list
-
-            currentInterestedColors += 1;
-            string[] tempItemString = new string[3];
-            tempItemString[0] = currentInterestedColors.ToString();
-            tempItemString[1] = "    ";
-            tempItemString[2] = 0.ToString();
-
-            interestedColorList.Items.Add(new ListViewItem(tempItemString));
-            interestedColorList.Items[currentInterestedColors - 1].UseItemStyleForSubItems = false;
-            interestedColorList.Items[currentInterestedColors - 1].SubItems[1].BackColor = Color.FromArgb(100,100,50);
+            RangeF hueRange = new RangeF();
+            selectColorForm mySelectColorForm = new selectColorForm(resizedCurrentVideoFrame, ref hueRange);
+            mySelectColorForm.ShowDialog();
+            if (mySelectColorForm.DialogResult == DialogResult.OK)
+            {
+                interestedColors.Add(mySelectColorForm.hueRange);
+                blobCount.Add(0);
+                rewriteColorList();
+            }
         }
+       
+        private void rewriteColorList()
+        {
+            interestedColorList.Items.Clear();
+            for (int colorNo =0;colorNo< interestedColors.Count; colorNo++)
+            {
+                string[] tempItemString = new string[3];
+                tempItemString[0] = (colorNo+1).ToString();
+                tempItemString[1] = "    ";
+                tempItemString[2] = blobCount[colorNo].ToString();
+                interestedColorList.Items.Add(new ListViewItem(tempItemString));
+                interestedColorList.Items[colorNo].UseItemStyleForSubItems = false;
 
+                Image<Hsv, byte> hsvImage = new Image<Hsv, byte>(1, 1, new Hsv((interestedColors[colorNo].Min + interestedColors[colorNo].Max) / 2.0, 255, 255));
+                Image<Rgb, byte> rgbImage = hsvImage.Convert<Rgb, byte>();
+                Rgb showRgbColor = rgbImage[0, 0];
+                interestedColorList.Items[colorNo].SubItems[1].BackColor = Color.FromArgb((int)showRgbColor.Red, (int)showRgbColor.Green, (int)showRgbColor.Blue);
+            }
+        }
         private void removeInterestedColorBtn_Click(object sender, EventArgs e)
         {
 
