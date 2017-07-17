@@ -60,7 +60,8 @@ namespace clickerByColor
             Mat segmentationResultMat = new Mat();
             Mat hsvImage = new Mat();
             Mat blurOriginalCurrentVideoFrame = new Mat();
-            CvInvoke.Blur(originalCurrentVideoFrame, blurOriginalCurrentVideoFrame, new Size(3, 3),new Point(-1,-1));
+            CvInvoke.MedianBlur(originalCurrentVideoFrame, blurOriginalCurrentVideoFrame, 7);
+            //CvInvoke.Blur(originalCurrentVideoFrame, blurOriginalCurrentVideoFrame, new Size(3, 3),new Point(-1,-1));
 
             CvInvoke.CvtColor(originalCurrentVideoFrame, hsvImage, ColorConversion.Bgr2Hsv);
             Mat[] hsvImageChannels = hsvImage.Split();
@@ -144,6 +145,7 @@ namespace clickerByColor
         {
 
         }
+
 
         public static void ConvertCoordinates(PictureBox pic,out int X0, out int Y0, int x, int y)
         {

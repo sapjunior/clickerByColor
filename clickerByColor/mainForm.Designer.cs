@@ -28,15 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.fromCamPictureBox = new System.Windows.Forms.PictureBox();
             this.fromCamGroupBox = new System.Windows.Forms.GroupBox();
+            this.fromCamPictureBox = new System.Windows.Forms.PictureBox();
             this.colorBlobAdjustmentTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.minBlobSizeGroupBox = new System.Windows.Forms.GroupBox();
-            this.maxBlobSizeGroupBox = new System.Windows.Forms.GroupBox();
-            this.interestedColorgroupBox = new System.Windows.Forms.GroupBox();
             this.minBlobSizeTrackBar = new System.Windows.Forms.TrackBar();
+            this.maxBlobSizeGroupBox = new System.Windows.Forms.GroupBox();
             this.maxBlobSizeTrackBar = new System.Windows.Forms.TrackBar();
+            this.interestedColorgroupBox = new System.Windows.Forms.GroupBox();
             this.detectionColorListTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.addInterestedColorBtn = new System.Windows.Forms.Button();
             this.removeInterestedColorBtn = new System.Windows.Forms.Button();
@@ -44,15 +45,16 @@
             this.colorNo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colorSample = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colorCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.blobCountUpdater = new System.Windows.Forms.Timer(this.components);
             this.mainTableLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.fromCamPictureBox)).BeginInit();
             this.fromCamGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fromCamPictureBox)).BeginInit();
             this.colorBlobAdjustmentTableLayoutPanel.SuspendLayout();
             this.minBlobSizeGroupBox.SuspendLayout();
-            this.maxBlobSizeGroupBox.SuspendLayout();
-            this.interestedColorgroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minBlobSizeTrackBar)).BeginInit();
+            this.maxBlobSizeGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maxBlobSizeTrackBar)).BeginInit();
+            this.interestedColorgroupBox.SuspendLayout();
             this.detectionColorListTableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,15 +74,6 @@
             this.mainTableLayoutPanel.Size = new System.Drawing.Size(1006, 603);
             this.mainTableLayoutPanel.TabIndex = 0;
             // 
-            // fromCamPictureBox
-            // 
-            this.fromCamPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fromCamPictureBox.Location = new System.Drawing.Point(3, 18);
-            this.fromCamPictureBox.Name = "fromCamPictureBox";
-            this.fromCamPictureBox.Size = new System.Drawing.Size(792, 576);
-            this.fromCamPictureBox.TabIndex = 0;
-            this.fromCamPictureBox.TabStop = false;
-            // 
             // fromCamGroupBox
             // 
             this.fromCamGroupBox.Controls.Add(this.fromCamPictureBox);
@@ -91,6 +84,15 @@
             this.fromCamGroupBox.TabIndex = 1;
             this.fromCamGroupBox.TabStop = false;
             this.fromCamGroupBox.Text = "Live Sream";
+            // 
+            // fromCamPictureBox
+            // 
+            this.fromCamPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fromCamPictureBox.Location = new System.Drawing.Point(3, 18);
+            this.fromCamPictureBox.Name = "fromCamPictureBox";
+            this.fromCamPictureBox.Size = new System.Drawing.Size(792, 576);
+            this.fromCamPictureBox.TabIndex = 0;
+            this.fromCamPictureBox.TabStop = false;
             // 
             // colorBlobAdjustmentTableLayoutPanel
             // 
@@ -120,6 +122,16 @@
             this.minBlobSizeGroupBox.TabStop = false;
             this.minBlobSizeGroupBox.Text = "Minimum Blob Size (%)";
             // 
+            // minBlobSizeTrackBar
+            // 
+            this.minBlobSizeTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.minBlobSizeTrackBar.Location = new System.Drawing.Point(3, 18);
+            this.minBlobSizeTrackBar.Minimum = 1;
+            this.minBlobSizeTrackBar.Name = "minBlobSizeTrackBar";
+            this.minBlobSizeTrackBar.Size = new System.Drawing.Size(184, 62);
+            this.minBlobSizeTrackBar.TabIndex = 0;
+            this.minBlobSizeTrackBar.Value = 1;
+            // 
             // maxBlobSizeGroupBox
             // 
             this.maxBlobSizeGroupBox.Controls.Add(this.maxBlobSizeTrackBar);
@@ -131,6 +143,16 @@
             this.maxBlobSizeGroupBox.TabStop = false;
             this.maxBlobSizeGroupBox.Text = "Maximum Blob Size (%)";
             // 
+            // maxBlobSizeTrackBar
+            // 
+            this.maxBlobSizeTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.maxBlobSizeTrackBar.Location = new System.Drawing.Point(3, 18);
+            this.maxBlobSizeTrackBar.Minimum = 1;
+            this.maxBlobSizeTrackBar.Name = "maxBlobSizeTrackBar";
+            this.maxBlobSizeTrackBar.Size = new System.Drawing.Size(184, 64);
+            this.maxBlobSizeTrackBar.TabIndex = 0;
+            this.maxBlobSizeTrackBar.Value = 3;
+            // 
             // interestedColorgroupBox
             // 
             this.interestedColorgroupBox.Controls.Add(this.detectionColorListTableLayoutPanel);
@@ -141,26 +163,6 @@
             this.interestedColorgroupBox.TabIndex = 2;
             this.interestedColorgroupBox.TabStop = false;
             this.interestedColorgroupBox.Text = "Interested Colors";
-            // 
-            // minBlobSizeTrackBar
-            // 
-            this.minBlobSizeTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.minBlobSizeTrackBar.Location = new System.Drawing.Point(3, 18);
-            this.minBlobSizeTrackBar.Minimum = 1;
-            this.minBlobSizeTrackBar.Name = "minBlobSizeTrackBar";
-            this.minBlobSizeTrackBar.Size = new System.Drawing.Size(184, 62);
-            this.minBlobSizeTrackBar.TabIndex = 0;
-            this.minBlobSizeTrackBar.Value = 1;
-            // 
-            // maxBlobSizeTrackBar
-            // 
-            this.maxBlobSizeTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.maxBlobSizeTrackBar.Location = new System.Drawing.Point(3, 18);
-            this.maxBlobSizeTrackBar.Minimum = 1;
-            this.maxBlobSizeTrackBar.Name = "maxBlobSizeTrackBar";
-            this.maxBlobSizeTrackBar.Size = new System.Drawing.Size(184, 64);
-            this.maxBlobSizeTrackBar.TabIndex = 0;
-            this.maxBlobSizeTrackBar.Value = 3;
             // 
             // detectionColorListTableLayoutPanel
             // 
@@ -237,6 +239,12 @@
             this.colorCount.Text = "Count";
             this.colorCount.Width = 106;
             // 
+            // blobCountUpdater
+            // 
+            this.blobCountUpdater.Enabled = true;
+            this.blobCountUpdater.Interval = 300;
+            this.blobCountUpdater.Tick += new System.EventHandler(this.blobCountUpdater_Tick);
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -247,16 +255,16 @@
             this.Name = "mainForm";
             this.Text = "Clicker By Color";
             this.mainTableLayoutPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.fromCamPictureBox)).EndInit();
             this.fromCamGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.fromCamPictureBox)).EndInit();
             this.colorBlobAdjustmentTableLayoutPanel.ResumeLayout(false);
             this.minBlobSizeGroupBox.ResumeLayout(false);
             this.minBlobSizeGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.minBlobSizeTrackBar)).EndInit();
             this.maxBlobSizeGroupBox.ResumeLayout(false);
             this.maxBlobSizeGroupBox.PerformLayout();
-            this.interestedColorgroupBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.minBlobSizeTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxBlobSizeTrackBar)).EndInit();
+            this.interestedColorgroupBox.ResumeLayout(false);
             this.detectionColorListTableLayoutPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -280,6 +288,7 @@
         private System.Windows.Forms.ColumnHeader colorNo;
         private System.Windows.Forms.ColumnHeader colorSample;
         private System.Windows.Forms.ColumnHeader colorCount;
+        private System.Windows.Forms.Timer blobCountUpdater;
     }
 }
 

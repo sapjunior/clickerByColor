@@ -9,12 +9,14 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
+using Emgu.CV.Util;
+
 namespace clickerByColor
 {
     public partial class mainForm : Form
     {
         private VideoCapture fromWebcam;
-        private Mat currentVideoFrame,resizedCurrentVideoFrame;
+        private Mat currentVideoFrame,resizedCurrentVideoFrame, blurOriginalCurrentVideoFrame, hsvVideoFrame;
         private int currentInterestedColors = 0;
         private List<RangeF> interestedColors = new List<RangeF>();
         private List<int> blobCount = new List<int>();
@@ -30,6 +32,8 @@ namespace clickerByColor
                     fromWebcam = new VideoCapture(0);
                     currentVideoFrame = new Mat();
                     resizedCurrentVideoFrame = new Mat();
+                    blurOriginalCurrentVideoFrame = new Mat();
+                    hsvVideoFrame = new Mat();
                 }
                 catch (NullReferenceException excpt)
                 {
@@ -52,7 +56,48 @@ namespace clickerByColor
             {
                 // Resize should preserve aspect ratio
                 resizedCurrentVideoFrame = keepAspectRatioResize(currentVideoFrame, new Size(fromCamPictureBox.Width,fromCamPictureBox.Height));
+
+                //CvInvoke.Blur(resizedCurrentVideoFrame, blurOriginalCurrentVideoFrame, new Size(3, 3), new Point(-1, -1));
+                CvInvoke.MedianBlur(resizedCurrentVideoFrame, blurOriginalCurrentVideoFrame, 7);
+                CvInvoke.CvtColor(blurOriginalCurrentVideoFrame, hsvVideoFrame, ColorConversion.Bgr2Hsv);
+                Mat[] hsvImageChannels = hsvVideoFrame.Split();
+                // Iterate over defined color range
+                for (int colorRange = 0;colorRange< interestedColors.Count; colorRange++)
+                {
+                    Mat segmentationResultMat = new Mat();
+                    CvInvoke.InRange(hsvImageChannels[0], new ScalarArray(interestedColors[colorRange].Min), new ScalarArray(interestedColors[colorRange].Max), segmentationResultMat);
+
+                    VectorOfVectorOfPoint currentColorContours = new VectorOfVectorOfPoint();
+                    CvInvoke.FindContours(segmentationResultMat, currentColorContours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+                    int currentColorBlob = 0;
+                    for (int contourNo = 0; contourNo < currentColorContours.Size; contourNo++)
+                    {
+                       
+                        double currentContourArea = CvInvoke.ContourArea(currentColorContours[contourNo]);
+                        if (currentContourArea > resizedCurrentVideoFrame.Width*resizedCurrentVideoFrame.Height*0.01) {
+                            Rectangle contourBBox = CvInvoke.BoundingRectangle(currentColorContours[contourNo]);
+                            CvInvoke.DrawContours(resizedCurrentVideoFrame, currentColorContours, contourNo, new MCvScalar(0, 255, 0), 2);
+                            MCvMoments contourMoment = CvInvoke.Moments(currentColorContours[contourNo]);
+                            Point weightedCentroid = new Point((int)(contourMoment.M10 / contourMoment.M00), (int)(contourMoment.M01 / contourMoment.M00));
+                            CvInvoke.PutText(resizedCurrentVideoFrame,(colorRange+1).ToString(), weightedCentroid, FontFace.HersheyComplexSmall,1.0,new Bgr(0, 0, 255).MCvScalar);
+                            currentColorBlob++;
+                        }
+                    }
+                    /*this.interestedColorList.Invoke((MethodInvoker)delegate {
+                        // Running on the UI thread
+                        this.interestedColorList.Items[colorRange].SubItems[2].Text = currentColorBlob.ToString();
+                    });*/
+                    blobCount[colorRange] = currentColorBlob;
+                    
+                }
+
                 fromCamPictureBox.Image = resizedCurrentVideoFrame.Bitmap;
+            }
+            else
+            {
+                //No Frame Retreive, reopen camera
+                fromWebcam.Stop();
+                fromWebcam.Start();
             }
         }
 
@@ -69,7 +114,15 @@ namespace clickerByColor
                 rewriteColorList();
             }
         }
-       
+
+        private void blobCountUpdater_Tick(object sender, EventArgs e)
+        {
+            for (int colorRange = 0; colorRange < interestedColors.Count; colorRange++)
+            {
+                interestedColorList.Items[colorRange].SubItems[2].Text = blobCount[colorRange].ToString();
+            }
+        }
+
         private void rewriteColorList()
         {
             interestedColorList.Items.Clear();
@@ -90,7 +143,13 @@ namespace clickerByColor
         }
         private void removeInterestedColorBtn_Click(object sender, EventArgs e)
         {
-
+            if(interestedColorList.Items.Count > 0)
+            {
+                interestedColors.RemoveAt(interestedColorList.SelectedIndices[0]);
+                blobCount.Remove(interestedColorList.SelectedIndices[0]);
+                interestedColorList.Items.RemoveAt(interestedColorList.SelectedIndices[0]);
+                rewriteColorList();
+            }
         }
 
         private Mat keepAspectRatioResize(Mat inputImage, Size targetSize,int padColor = 0)
