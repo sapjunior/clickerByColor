@@ -38,7 +38,6 @@
             this.addInterestedColorBtn = new System.Windows.Forms.Button();
             this.removeInterestedColorBtn = new System.Windows.Forms.Button();
             this.interestedColorList = new System.Windows.Forms.ListView();
-            this.colorNo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colorSample = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colorCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.openImageBtn = new System.Windows.Forms.Button();
@@ -48,6 +47,9 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.blobCountUpdater = new System.Windows.Forms.Timer(this.components);
             this.openImageFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label1 = new System.Windows.Forms.Label();
+            this.numPersonTextBox = new System.Windows.Forms.TextBox();
             this.mainTableLayoutPanel.SuspendLayout();
             this.fromCamGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fromCamPictureBox)).BeginInit();
@@ -129,11 +131,15 @@
             this.detectionColorListTableLayoutPanel.Controls.Add(this.removeInterestedColorBtn, 0, 2);
             this.detectionColorListTableLayoutPanel.Controls.Add(this.interestedColorList, 0, 0);
             this.detectionColorListTableLayoutPanel.Controls.Add(this.openImageBtn, 0, 3);
+            this.detectionColorListTableLayoutPanel.Controls.Add(this.label1, 0, 4);
+            this.detectionColorListTableLayoutPanel.Controls.Add(this.numPersonTextBox, 0, 5);
             this.detectionColorListTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.detectionColorListTableLayoutPanel.Location = new System.Drawing.Point(3, 18);
             this.detectionColorListTableLayoutPanel.Name = "detectionColorListTableLayoutPanel";
-            this.detectionColorListTableLayoutPanel.RowCount = 4;
+            this.detectionColorListTableLayoutPanel.RowCount = 6;
             this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
@@ -143,7 +149,7 @@
             // addInterestedColorBtn
             // 
             this.addInterestedColorBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.addInterestedColorBtn.Location = new System.Drawing.Point(3, 453);
+            this.addInterestedColorBtn.Location = new System.Drawing.Point(3, 393);
             this.addInterestedColorBtn.Name = "addInterestedColorBtn";
             this.addInterestedColorBtn.Size = new System.Drawing.Size(178, 24);
             this.addInterestedColorBtn.TabIndex = 0;
@@ -154,7 +160,7 @@
             // removeInterestedColorBtn
             // 
             this.removeInterestedColorBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.removeInterestedColorBtn.Location = new System.Drawing.Point(3, 483);
+            this.removeInterestedColorBtn.Location = new System.Drawing.Point(3, 423);
             this.removeInterestedColorBtn.Name = "removeInterestedColorBtn";
             this.removeInterestedColorBtn.Size = new System.Drawing.Size(178, 24);
             this.removeInterestedColorBtn.TabIndex = 1;
@@ -165,28 +171,22 @@
             // interestedColorList
             // 
             this.interestedColorList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colorNo,
             this.colorSample,
-            this.colorCount});
+            this.colorCount,
+            this.columnHeader1});
             this.interestedColorList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.interestedColorList.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.interestedColorList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.interestedColorList.FullRowSelect = true;
             this.interestedColorList.GridLines = true;
             this.interestedColorList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.interestedColorList.Location = new System.Drawing.Point(3, 3);
             this.interestedColorList.MultiSelect = false;
             this.interestedColorList.Name = "interestedColorList";
-            this.interestedColorList.Scrollable = false;
             this.interestedColorList.ShowGroups = false;
-            this.interestedColorList.Size = new System.Drawing.Size(178, 444);
+            this.interestedColorList.Size = new System.Drawing.Size(178, 384);
             this.interestedColorList.TabIndex = 2;
             this.interestedColorList.UseCompatibleStateImageBehavior = false;
             this.interestedColorList.View = System.Windows.Forms.View.Details;
-            // 
-            // colorNo
-            // 
-            this.colorNo.Text = "No";
-            this.colorNo.Width = 40;
             // 
             // colorSample
             // 
@@ -195,13 +195,13 @@
             // 
             // colorCount
             // 
-            this.colorCount.Text = "%";
-            this.colorCount.Width = 100;
+            this.colorCount.Text = "Area(%)";
+            this.colorCount.Width = 70;
             // 
             // openImageBtn
             // 
             this.openImageBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.openImageBtn.Location = new System.Drawing.Point(3, 513);
+            this.openImageBtn.Location = new System.Drawing.Point(3, 453);
             this.openImageBtn.Name = "openImageBtn";
             this.openImageBtn.Size = new System.Drawing.Size(178, 24);
             this.openImageBtn.TabIndex = 3;
@@ -253,6 +253,31 @@
             // 
             this.openImageFileDialog.FileName = "openFileDialog1";
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Count (Person)";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 486);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(123, 17);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Number of Person";
+            // 
+            // numPersonTextBox
+            // 
+            this.numPersonTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numPersonTextBox.Location = new System.Drawing.Point(3, 513);
+            this.numPersonTextBox.Name = "numPersonTextBox";
+            this.numPersonTextBox.Size = new System.Drawing.Size(178, 22);
+            this.numPersonTextBox.TabIndex = 5;
+            this.numPersonTextBox.Text = "1800";
+            this.numPersonTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numPersonTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.numPersonTextBox_KeyPress);
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -269,6 +294,7 @@
             this.colorBlobAdjustmentTableLayoutPanel.ResumeLayout(false);
             this.interestedColorgroupBox.ResumeLayout(false);
             this.detectionColorListTableLayoutPanel.ResumeLayout(false);
+            this.detectionColorListTableLayoutPanel.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -286,7 +312,6 @@
         private System.Windows.Forms.Button addInterestedColorBtn;
         private System.Windows.Forms.Button removeInterestedColorBtn;
         private System.Windows.Forms.ListView interestedColorList;
-        private System.Windows.Forms.ColumnHeader colorNo;
         private System.Windows.Forms.ColumnHeader colorSample;
         private System.Windows.Forms.ColumnHeader colorCount;
         private System.Windows.Forms.Timer blobCountUpdater;
@@ -296,6 +321,9 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.Button openImageBtn;
         private System.Windows.Forms.OpenFileDialog openImageFileDialog;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox numPersonTextBox;
     }
 }
 

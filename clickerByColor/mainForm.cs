@@ -127,7 +127,15 @@ namespace clickerByColor
             for (int colorRange = 0; colorRange < interestedColors.Count; colorRange++)
             {
                 
-                interestedColorList.Items[colorRange].SubItems[2].Text = (Math.Truncate(blobCount[colorRange] * 100) / 100).ToString();
+                interestedColorList.Items[colorRange].SubItems[1].Text = (Math.Truncate(blobCount[colorRange] * 100) / 100).ToString();
+                if (numPersonTextBox.Text.Length > 0)
+                {
+                    interestedColorList.Items[colorRange].SubItems[2].Text = ((int)( (blobCount[colorRange] * Convert.ToInt32(numPersonTextBox.Text)) / 100)).ToString();
+                }
+                else
+                {
+                    interestedColorList.Items[colorRange].SubItems[2].Text = "ERR";
+                }
             }
         }
 
@@ -137,11 +145,18 @@ namespace clickerByColor
             {
                 try
                 {
-                    currentVideoFrame = new Mat(openImageFileDialog.FileName); 
-                    fromCamPictureBox.Image = currentVideoFrame.Bitmap;
-                    interestedColors.Clear();
-                    blobCount.Clear();
-                    rewriteColorList();
+                    currentVideoFrame = new Mat(openImageFileDialog.FileName);
+                    // Select Area!!!
+                    defineArea newDefineArea = new defineArea(currentVideoFrame);
+                    if(newDefineArea.ShowDialog() == DialogResult.OK)
+                    {
+                        currentVideoFrame = newDefineArea.segmentedArea.Clone();
+                        fromCamPictureBox.Image = currentVideoFrame.Bitmap;
+                        interestedColors.Clear();
+                        blobCount.Clear();
+                        rewriteColorList();
+                    }
+
                 }
                 catch (Exception)
                 {
@@ -203,15 +218,33 @@ namespace clickerByColor
             
         }
 
+        private void numPersonTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+            
+        }
+
         private void rewriteColorList()
         {
             interestedColorList.Items.Clear();
             for (int colorNo =0;colorNo< interestedColors.Count; colorNo++)
             {
                 string[] tempItemString = new string[3];
-                tempItemString[0] = (colorNo+1).ToString();
-                tempItemString[1] = "    ";
-                tempItemString[2] = blobCount[colorNo].ToString();
+
+                tempItemString[0] = "    ";
+                tempItemString[1] = blobCount[colorNo].ToString();
+                if (numPersonTextBox.Text.Length > 0)
+                {
+                    tempItemString[2] = ((int)((blobCount[colorNo] * Convert.ToInt32(numPersonTextBox.Text)) / 100)).ToString();
+                }
+                else
+                {
+                    tempItemString[2] = "ERR";
+                }
                 interestedColorList.Items.Add(new ListViewItem(tempItemString));
                 interestedColorList.Items[colorNo].UseItemStyleForSubItems = false;
 
@@ -219,19 +252,19 @@ namespace clickerByColor
                 Image<Rgb, byte> rgbImage = hsvImage.Convert<Rgb, byte>();
                
                 Rgb showRgbColor = rgbImage[0, 0];
-                interestedColorList.Items[colorNo].SubItems[1].BackColor = Color.FromArgb((int)showRgbColor.Red, (int)showRgbColor.Green, (int)showRgbColor.Blue);
+                interestedColorList.Items[colorNo].SubItems[0].BackColor = Color.FromArgb((int)showRgbColor.Red, (int)showRgbColor.Green, (int)showRgbColor.Blue);
             }
         }
         private void removeInterestedColorBtn_Click(object sender, EventArgs e)
         {
-            if(interestedColorList.Items.Count > 0)
+            if(interestedColorList.Items.Count > 0 && interestedColorList.Items[interestedColorList.SelectedIndices[0]] !=null)
             {
-                interestedColors.RemoveAt(interestedColorList.SelectedIndices[0]);
-                blobCount.Remove(interestedColorList.SelectedIndices[0]);
-                interestedColorList.Items.RemoveAt(interestedColorList.SelectedIndices[0]);
-                segmentOneShot();
-                rewriteColorList();
-                
+
+                 interestedColors.RemoveAt(interestedColorList.SelectedIndices[0]);
+                 blobCount.Remove(interestedColorList.SelectedIndices[0]);
+                    interestedColorList.Items.RemoveAt(interestedColorList.SelectedIndices[0]);
+                    segmentOneShot();
+                    rewriteColorList();
             }
         }
 
