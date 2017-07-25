@@ -33,10 +33,6 @@
             this.fromCamGroupBox = new System.Windows.Forms.GroupBox();
             this.fromCamPictureBox = new System.Windows.Forms.PictureBox();
             this.colorBlobAdjustmentTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.minBlobSizeGroupBox = new System.Windows.Forms.GroupBox();
-            this.minBlobSizeTrackBar = new System.Windows.Forms.TrackBar();
-            this.maxBlobSizeGroupBox = new System.Windows.Forms.GroupBox();
-            this.maxBlobSizeTrackBar = new System.Windows.Forms.TrackBar();
             this.interestedColorgroupBox = new System.Windows.Forms.GroupBox();
             this.detectionColorListTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.addInterestedColorBtn = new System.Windows.Forms.Button();
@@ -45,17 +41,20 @@
             this.colorNo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colorSample = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colorCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.openImageBtn = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.switchCameraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.blobCountUpdater = new System.Windows.Forms.Timer(this.components);
+            this.openImageFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainTableLayoutPanel.SuspendLayout();
             this.fromCamGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fromCamPictureBox)).BeginInit();
             this.colorBlobAdjustmentTableLayoutPanel.SuspendLayout();
-            this.minBlobSizeGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.minBlobSizeTrackBar)).BeginInit();
-            this.maxBlobSizeGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.maxBlobSizeTrackBar)).BeginInit();
             this.interestedColorgroupBox.SuspendLayout();
             this.detectionColorListTableLayoutPanel.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTableLayoutPanel
@@ -63,14 +62,15 @@
             this.mainTableLayoutPanel.ColumnCount = 2;
             this.mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.mainTableLayoutPanel.Controls.Add(this.fromCamGroupBox, 0, 0);
-            this.mainTableLayoutPanel.Controls.Add(this.colorBlobAdjustmentTableLayoutPanel, 1, 0);
+            this.mainTableLayoutPanel.Controls.Add(this.fromCamGroupBox, 0, 1);
+            this.mainTableLayoutPanel.Controls.Add(this.colorBlobAdjustmentTableLayoutPanel, 1, 1);
+            this.mainTableLayoutPanel.Controls.Add(this.menuStrip1, 0, 0);
             this.mainTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.mainTableLayoutPanel.Name = "mainTableLayoutPanel";
-            this.mainTableLayoutPanel.RowCount = 1;
+            this.mainTableLayoutPanel.RowCount = 2;
+            this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.mainTableLayoutPanel.Size = new System.Drawing.Size(1006, 603);
             this.mainTableLayoutPanel.TabIndex = 0;
             // 
@@ -78,19 +78,20 @@
             // 
             this.fromCamGroupBox.Controls.Add(this.fromCamPictureBox);
             this.fromCamGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fromCamGroupBox.Location = new System.Drawing.Point(3, 3);
+            this.fromCamGroupBox.Location = new System.Drawing.Point(3, 33);
             this.fromCamGroupBox.Name = "fromCamGroupBox";
-            this.fromCamGroupBox.Size = new System.Drawing.Size(798, 597);
+            this.fromCamGroupBox.Size = new System.Drawing.Size(798, 567);
             this.fromCamGroupBox.TabIndex = 1;
             this.fromCamGroupBox.TabStop = false;
-            this.fromCamGroupBox.Text = "Live Sream";
+            this.fromCamGroupBox.Text = "Result";
             // 
             // fromCamPictureBox
             // 
             this.fromCamPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fromCamPictureBox.Location = new System.Drawing.Point(3, 18);
             this.fromCamPictureBox.Name = "fromCamPictureBox";
-            this.fromCamPictureBox.Size = new System.Drawing.Size(792, 576);
+            this.fromCamPictureBox.Size = new System.Drawing.Size(792, 546);
+            this.fromCamPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.fromCamPictureBox.TabIndex = 0;
             this.fromCamPictureBox.TabStop = false;
             // 
@@ -98,60 +99,16 @@
             // 
             this.colorBlobAdjustmentTableLayoutPanel.ColumnCount = 1;
             this.colorBlobAdjustmentTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.colorBlobAdjustmentTableLayoutPanel.Controls.Add(this.minBlobSizeGroupBox, 0, 1);
-            this.colorBlobAdjustmentTableLayoutPanel.Controls.Add(this.maxBlobSizeGroupBox, 0, 2);
             this.colorBlobAdjustmentTableLayoutPanel.Controls.Add(this.interestedColorgroupBox, 0, 0);
             this.colorBlobAdjustmentTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.colorBlobAdjustmentTableLayoutPanel.Location = new System.Drawing.Point(807, 3);
+            this.colorBlobAdjustmentTableLayoutPanel.Location = new System.Drawing.Point(807, 33);
             this.colorBlobAdjustmentTableLayoutPanel.Name = "colorBlobAdjustmentTableLayoutPanel";
-            this.colorBlobAdjustmentTableLayoutPanel.RowCount = 3;
-            this.colorBlobAdjustmentTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.colorBlobAdjustmentTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.colorBlobAdjustmentTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.colorBlobAdjustmentTableLayoutPanel.Size = new System.Drawing.Size(196, 597);
+            this.colorBlobAdjustmentTableLayoutPanel.RowCount = 1;
+            this.colorBlobAdjustmentTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.colorBlobAdjustmentTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.colorBlobAdjustmentTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.colorBlobAdjustmentTableLayoutPanel.Size = new System.Drawing.Size(196, 567);
             this.colorBlobAdjustmentTableLayoutPanel.TabIndex = 3;
-            // 
-            // minBlobSizeGroupBox
-            // 
-            this.minBlobSizeGroupBox.Controls.Add(this.minBlobSizeTrackBar);
-            this.minBlobSizeGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.minBlobSizeGroupBox.Location = new System.Drawing.Point(3, 420);
-            this.minBlobSizeGroupBox.Name = "minBlobSizeGroupBox";
-            this.minBlobSizeGroupBox.Size = new System.Drawing.Size(190, 83);
-            this.minBlobSizeGroupBox.TabIndex = 0;
-            this.minBlobSizeGroupBox.TabStop = false;
-            this.minBlobSizeGroupBox.Text = "Minimum Blob Size (%)";
-            // 
-            // minBlobSizeTrackBar
-            // 
-            this.minBlobSizeTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.minBlobSizeTrackBar.Location = new System.Drawing.Point(3, 18);
-            this.minBlobSizeTrackBar.Minimum = 1;
-            this.minBlobSizeTrackBar.Name = "minBlobSizeTrackBar";
-            this.minBlobSizeTrackBar.Size = new System.Drawing.Size(184, 62);
-            this.minBlobSizeTrackBar.TabIndex = 0;
-            this.minBlobSizeTrackBar.Value = 1;
-            // 
-            // maxBlobSizeGroupBox
-            // 
-            this.maxBlobSizeGroupBox.Controls.Add(this.maxBlobSizeTrackBar);
-            this.maxBlobSizeGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.maxBlobSizeGroupBox.Location = new System.Drawing.Point(3, 509);
-            this.maxBlobSizeGroupBox.Name = "maxBlobSizeGroupBox";
-            this.maxBlobSizeGroupBox.Size = new System.Drawing.Size(190, 85);
-            this.maxBlobSizeGroupBox.TabIndex = 1;
-            this.maxBlobSizeGroupBox.TabStop = false;
-            this.maxBlobSizeGroupBox.Text = "Maximum Blob Size (%)";
-            // 
-            // maxBlobSizeTrackBar
-            // 
-            this.maxBlobSizeTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.maxBlobSizeTrackBar.Location = new System.Drawing.Point(3, 18);
-            this.maxBlobSizeTrackBar.Minimum = 1;
-            this.maxBlobSizeTrackBar.Name = "maxBlobSizeTrackBar";
-            this.maxBlobSizeTrackBar.Size = new System.Drawing.Size(184, 64);
-            this.maxBlobSizeTrackBar.TabIndex = 0;
-            this.maxBlobSizeTrackBar.Value = 3;
             // 
             // interestedColorgroupBox
             // 
@@ -159,7 +116,7 @@
             this.interestedColorgroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.interestedColorgroupBox.Location = new System.Drawing.Point(3, 3);
             this.interestedColorgroupBox.Name = "interestedColorgroupBox";
-            this.interestedColorgroupBox.Size = new System.Drawing.Size(190, 411);
+            this.interestedColorgroupBox.Size = new System.Drawing.Size(190, 561);
             this.interestedColorgroupBox.TabIndex = 2;
             this.interestedColorgroupBox.TabStop = false;
             this.interestedColorgroupBox.Text = "Interested Colors";
@@ -171,22 +128,24 @@
             this.detectionColorListTableLayoutPanel.Controls.Add(this.addInterestedColorBtn, 0, 1);
             this.detectionColorListTableLayoutPanel.Controls.Add(this.removeInterestedColorBtn, 0, 2);
             this.detectionColorListTableLayoutPanel.Controls.Add(this.interestedColorList, 0, 0);
+            this.detectionColorListTableLayoutPanel.Controls.Add(this.openImageBtn, 0, 3);
             this.detectionColorListTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.detectionColorListTableLayoutPanel.Location = new System.Drawing.Point(3, 18);
             this.detectionColorListTableLayoutPanel.Name = "detectionColorListTableLayoutPanel";
-            this.detectionColorListTableLayoutPanel.RowCount = 3;
-            this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.detectionColorListTableLayoutPanel.Size = new System.Drawing.Size(184, 390);
+            this.detectionColorListTableLayoutPanel.RowCount = 4;
+            this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.detectionColorListTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.detectionColorListTableLayoutPanel.Size = new System.Drawing.Size(184, 540);
             this.detectionColorListTableLayoutPanel.TabIndex = 0;
             // 
             // addInterestedColorBtn
             // 
             this.addInterestedColorBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.addInterestedColorBtn.Location = new System.Drawing.Point(3, 315);
+            this.addInterestedColorBtn.Location = new System.Drawing.Point(3, 453);
             this.addInterestedColorBtn.Name = "addInterestedColorBtn";
-            this.addInterestedColorBtn.Size = new System.Drawing.Size(178, 33);
+            this.addInterestedColorBtn.Size = new System.Drawing.Size(178, 24);
             this.addInterestedColorBtn.TabIndex = 0;
             this.addInterestedColorBtn.Text = "Add Color";
             this.addInterestedColorBtn.UseVisualStyleBackColor = true;
@@ -195,9 +154,9 @@
             // removeInterestedColorBtn
             // 
             this.removeInterestedColorBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.removeInterestedColorBtn.Location = new System.Drawing.Point(3, 354);
+            this.removeInterestedColorBtn.Location = new System.Drawing.Point(3, 483);
             this.removeInterestedColorBtn.Name = "removeInterestedColorBtn";
-            this.removeInterestedColorBtn.Size = new System.Drawing.Size(178, 33);
+            this.removeInterestedColorBtn.Size = new System.Drawing.Size(178, 24);
             this.removeInterestedColorBtn.TabIndex = 1;
             this.removeInterestedColorBtn.Text = "Remove Color";
             this.removeInterestedColorBtn.UseVisualStyleBackColor = true;
@@ -210,7 +169,7 @@
             this.colorSample,
             this.colorCount});
             this.interestedColorList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.interestedColorList.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.interestedColorList.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.interestedColorList.FullRowSelect = true;
             this.interestedColorList.GridLines = true;
             this.interestedColorList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -219,7 +178,7 @@
             this.interestedColorList.Name = "interestedColorList";
             this.interestedColorList.Scrollable = false;
             this.interestedColorList.ShowGroups = false;
-            this.interestedColorList.Size = new System.Drawing.Size(178, 306);
+            this.interestedColorList.Size = new System.Drawing.Size(178, 444);
             this.interestedColorList.TabIndex = 2;
             this.interestedColorList.UseCompatibleStateImageBehavior = false;
             this.interestedColorList.View = System.Windows.Forms.View.Details;
@@ -227,23 +186,72 @@
             // colorNo
             // 
             this.colorNo.Text = "No";
-            this.colorNo.Width = 35;
+            this.colorNo.Width = 40;
             // 
             // colorSample
             // 
             this.colorSample.Text = "      ";
-            this.colorSample.Width = 40;
+            this.colorSample.Width = 50;
             // 
             // colorCount
             // 
-            this.colorCount.Text = "Count";
-            this.colorCount.Width = 106;
+            this.colorCount.Text = "%";
+            this.colorCount.Width = 100;
+            // 
+            // openImageBtn
+            // 
+            this.openImageBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.openImageBtn.Location = new System.Drawing.Point(3, 513);
+            this.openImageBtn.Name = "openImageBtn";
+            this.openImageBtn.Size = new System.Drawing.Size(178, 24);
+            this.openImageBtn.TabIndex = 3;
+            this.openImageBtn.Text = "Open Image";
+            this.openImageBtn.UseVisualStyleBackColor = true;
+            this.openImageBtn.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(804, 28);
+            this.menuStrip1.TabIndex = 4;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // menuToolStripMenuItem
+            // 
+            this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.switchCameraToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
+            this.menuToolStripMenuItem.Size = new System.Drawing.Size(58, 24);
+            this.menuToolStripMenuItem.Text = "Menu";
+            // 
+            // switchCameraToolStripMenuItem
+            // 
+            this.switchCameraToolStripMenuItem.Enabled = false;
+            this.switchCameraToolStripMenuItem.Name = "switchCameraToolStripMenuItem";
+            this.switchCameraToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
+            this.switchCameraToolStripMenuItem.Text = "Switch Camera";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // blobCountUpdater
             // 
             this.blobCountUpdater.Enabled = true;
             this.blobCountUpdater.Interval = 300;
             this.blobCountUpdater.Tick += new System.EventHandler(this.blobCountUpdater_Tick);
+            // 
+            // openImageFileDialog
+            // 
+            this.openImageFileDialog.FileName = "openFileDialog1";
             // 
             // mainForm
             // 
@@ -255,17 +263,14 @@
             this.Name = "mainForm";
             this.Text = "Clicker By Color";
             this.mainTableLayoutPanel.ResumeLayout(false);
+            this.mainTableLayoutPanel.PerformLayout();
             this.fromCamGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fromCamPictureBox)).EndInit();
             this.colorBlobAdjustmentTableLayoutPanel.ResumeLayout(false);
-            this.minBlobSizeGroupBox.ResumeLayout(false);
-            this.minBlobSizeGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.minBlobSizeTrackBar)).EndInit();
-            this.maxBlobSizeGroupBox.ResumeLayout(false);
-            this.maxBlobSizeGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.maxBlobSizeTrackBar)).EndInit();
             this.interestedColorgroupBox.ResumeLayout(false);
             this.detectionColorListTableLayoutPanel.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -276,11 +281,7 @@
         private System.Windows.Forms.PictureBox fromCamPictureBox;
         private System.Windows.Forms.GroupBox fromCamGroupBox;
         private System.Windows.Forms.TableLayoutPanel colorBlobAdjustmentTableLayoutPanel;
-        private System.Windows.Forms.GroupBox minBlobSizeGroupBox;
-        private System.Windows.Forms.GroupBox maxBlobSizeGroupBox;
         private System.Windows.Forms.GroupBox interestedColorgroupBox;
-        private System.Windows.Forms.TrackBar minBlobSizeTrackBar;
-        private System.Windows.Forms.TrackBar maxBlobSizeTrackBar;
         private System.Windows.Forms.TableLayoutPanel detectionColorListTableLayoutPanel;
         private System.Windows.Forms.Button addInterestedColorBtn;
         private System.Windows.Forms.Button removeInterestedColorBtn;
@@ -289,6 +290,12 @@
         private System.Windows.Forms.ColumnHeader colorSample;
         private System.Windows.Forms.ColumnHeader colorCount;
         private System.Windows.Forms.Timer blobCountUpdater;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem menuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem switchCameraToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.Button openImageBtn;
+        private System.Windows.Forms.OpenFileDialog openImageFileDialog;
     }
 }
 

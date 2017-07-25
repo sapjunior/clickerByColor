@@ -19,12 +19,13 @@ namespace clickerByColor
         private Mat currentVideoFrame,resizedCurrentVideoFrame, blurOriginalCurrentVideoFrame, hsvVideoFrame;
         private int currentInterestedColors = 0;
         private List<RangeF> interestedColors = new List<RangeF>();
-        private List<int> blobCount = new List<int>();
+        private List<double> blobCount = new List<double>();
         public mainForm()
         {
             InitializeComponent();
 
             // Intialize VideoCapture
+            /*
             if (fromWebcam == null)
             {
                 try
@@ -44,11 +45,15 @@ namespace clickerByColor
 
             // Attach VideoCapture callback to function
             fromWebcam.ImageGrabbed += frameProcessor;
-            fromWebcam.SetCaptureProperty(CapProp.FrameWidth, 1360);
-            fromWebcam.SetCaptureProperty(CapProp.FrameHeight, 768);
+            fromWebcam.SetCaptureProperty(CapProp.FrameWidth, 1920);
+            fromWebcam.SetCaptureProperty(CapProp.FrameHeight, 1080);
             fromWebcam.Start();
+            */
+            resizedCurrentVideoFrame = new Mat();
+            blurOriginalCurrentVideoFrame = new Mat();
+            hsvVideoFrame = new Mat();
         }
-
+        
         private void frameProcessor(object sender, EventArgs e)
         {
             // Retreive frame from webcam
@@ -58,7 +63,7 @@ namespace clickerByColor
                 resizedCurrentVideoFrame = keepAspectRatioResize(currentVideoFrame, new Size(fromCamPictureBox.Width,fromCamPictureBox.Height));
 
                 //CvInvoke.Blur(resizedCurrentVideoFrame, blurOriginalCurrentVideoFrame, new Size(3, 3), new Point(-1, -1));
-                CvInvoke.MedianBlur(resizedCurrentVideoFrame, blurOriginalCurrentVideoFrame, 7);
+                CvInvoke.MedianBlur(resizedCurrentVideoFrame, blurOriginalCurrentVideoFrame, 5);
                 CvInvoke.CvtColor(blurOriginalCurrentVideoFrame, hsvVideoFrame, ColorConversion.Bgr2Hsv);
                 Mat[] hsvImageChannels = hsvVideoFrame.Split();
                 // Iterate over defined color range
@@ -70,48 +75,50 @@ namespace clickerByColor
                     VectorOfVectorOfPoint currentColorContours = new VectorOfVectorOfPoint();
                     CvInvoke.FindContours(segmentationResultMat, currentColorContours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
                     int currentColorBlob = 0;
+                    double sumContour = 0;
                     for (int contourNo = 0; contourNo < currentColorContours.Size; contourNo++)
                     {
                        
                         double currentContourArea = CvInvoke.ContourArea(currentColorContours[contourNo]);
-                        if (currentContourArea > resizedCurrentVideoFrame.Width*resizedCurrentVideoFrame.Height*0.01) {
+                        if (currentContourArea > resizedCurrentVideoFrame.Width*resizedCurrentVideoFrame.Height*0.0003 &&
+                            currentContourArea < resizedCurrentVideoFrame.Width * resizedCurrentVideoFrame.Height * 0.5) {
+                            sumContour += currentContourArea;
                             Rectangle contourBBox = CvInvoke.BoundingRectangle(currentColorContours[contourNo]);
                             CvInvoke.DrawContours(resizedCurrentVideoFrame, currentColorContours, contourNo, new MCvScalar(0, 255, 0), 2);
                             MCvMoments contourMoment = CvInvoke.Moments(currentColorContours[contourNo]);
                             Point weightedCentroid = new Point((int)(contourMoment.M10 / contourMoment.M00), (int)(contourMoment.M01 / contourMoment.M00));
-                            CvInvoke.PutText(resizedCurrentVideoFrame,(colorRange+1).ToString(), weightedCentroid, FontFace.HersheyComplexSmall,1.0,new Bgr(0, 0, 255).MCvScalar);
+                            CvInvoke.PutText(resizedCurrentVideoFrame,(colorRange+1).ToString(), weightedCentroid, FontFace.HersheyComplexSmall,4.0,new Bgr(0, 0, 255).MCvScalar);
                             currentColorBlob++;
                         }
                     }
-                    /*this.interestedColorList.Invoke((MethodInvoker)delegate {
-                        // Running on the UI thread
-                        this.interestedColorList.Items[colorRange].SubItems[2].Text = currentColorBlob.ToString();
-                    });*/
-                    blobCount[colorRange] = currentColorBlob;
-                    
+                    // Use timer to update UI blob count
+                    blobCount[colorRange] = ( sumContour/(currentVideoFrame.Rows*currentVideoFrame.Cols));
                 }
 
                 fromCamPictureBox.Image = resizedCurrentVideoFrame.Bitmap;
             }
             else
             {
-                //No Frame Retreive, reopen camera
-                fromWebcam.Stop();
-                fromWebcam.Start();
+                //No Frame Retreive, reopen camera => Something may be happen (VirtualBox bug)
+                System.Console.WriteLine("No Frame");
             }
         }
 
         private void addInterestedColorBtn_Click(object sender, EventArgs e)
         {
-            // Open new Window
-            RangeF hueRange = new RangeF();
-            selectColorForm mySelectColorForm = new selectColorForm(resizedCurrentVideoFrame, ref hueRange);
-            mySelectColorForm.ShowDialog();
-            if (mySelectColorForm.DialogResult == DialogResult.OK)
+            if (currentVideoFrame != null)
             {
-                interestedColors.Add(mySelectColorForm.hueRange);
-                blobCount.Add(0);
-                rewriteColorList();
+                // Open new Window
+                RangeF hueRange = new RangeF();
+                selectColorForm mySelectColorForm = new selectColorForm(currentVideoFrame, ref hueRange);
+                mySelectColorForm.ShowDialog();
+                if (mySelectColorForm.DialogResult == DialogResult.OK)
+                {
+                    interestedColors.Add(mySelectColorForm.hueRange);
+                    blobCount.Add(0);
+                    rewriteColorList();
+                    segmentOneShot();
+                }
             }
         }
 
@@ -119,8 +126,81 @@ namespace clickerByColor
         {
             for (int colorRange = 0; colorRange < interestedColors.Count; colorRange++)
             {
-                interestedColorList.Items[colorRange].SubItems[2].Text = blobCount[colorRange].ToString();
+                
+                interestedColorList.Items[colorRange].SubItems[2].Text = (Math.Truncate(blobCount[colorRange] * 100) / 100).ToString();
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (openImageFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    currentVideoFrame = new Mat(openImageFileDialog.FileName); 
+                    fromCamPictureBox.Image = currentVideoFrame.Bitmap;
+                    interestedColors.Clear();
+                    blobCount.Clear();
+                    rewriteColorList();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Invalid Image File", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+        }
+        private void segmentOneShot()
+        {
+            if (currentVideoFrame != null)
+            {
+                CvInvoke.MedianBlur(currentVideoFrame, blurOriginalCurrentVideoFrame, 5);
+                CvInvoke.CvtColor(blurOriginalCurrentVideoFrame, hsvVideoFrame, ColorConversion.Bgr2Hsv);
+                Mat[] hsvImageChannels = hsvVideoFrame.Split();
+                Mat tempImage = currentVideoFrame.Clone();
+                // Iterate over defined color range
+                for (int colorRange = 0; colorRange < interestedColors.Count; colorRange++)
+                {
+                    Mat segmentationResultMat = new Mat();
+                    CvInvoke.InRange(hsvImageChannels[0], new ScalarArray(interestedColors[colorRange].Min), new ScalarArray(interestedColors[colorRange].Max), segmentationResultMat);
+                    double sumArea = segmentationResultMat.ToImage<Gray,Byte>().CountNonzero()[0];
+                    Image<Hsv, byte> hsvImage = new Image<Hsv, byte>(1, 1, new Hsv((interestedColors[colorRange].Min + interestedColors[colorRange].Max) / 2.0, 255, 255));
+                    Image<Rgb, byte> rgbImage = hsvImage.Convert<Rgb, byte>();
+                    Rgb showRgbColor = rgbImage[0, 0];
+                    tempImage.SetTo(new MCvScalar(showRgbColor.Blue, showRgbColor.Green, showRgbColor.Red), segmentationResultMat);
+                    /*
+                    VectorOfVectorOfPoint currentColorContours = new VectorOfVectorOfPoint();
+                    CvInvoke.FindContours(segmentationResultMat, currentColorContours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+                    int currentColorBlob = 0;
+                    
+                    for (int contourNo = 0; contourNo < currentColorContours.Size; contourNo++)
+                    {
+
+                        double currentContourArea = CvInvoke.ContourArea(currentColorContours[contourNo]);
+                        /*if (currentContourArea > currentVideoFrame.Width * currentVideoFrame.Height * 0.0003 &&
+                            currentContourArea < currentVideoFrame.Width * currentVideoFrame.Height * 0.5)
+                        {
+                            sumContour += currentContourArea;
+                            Rectangle contourBBox = CvInvoke.BoundingRectangle(currentColorContours[contourNo]);
+
+                            Image<Hsv, byte> hsvImage = new Image<Hsv, byte>(1, 1, new Hsv((interestedColors[colorRange].Min + interestedColors[colorRange].Max) / 2.0, 255, 255));
+                            Image<Rgb, byte> rgbImage = hsvImage.Convert<Rgb, byte>();
+                            Rgb showRgbColor = rgbImage[0, 0];
+
+                            CvInvoke.DrawContours(tempImage, currentColorContours, contourNo, new MCvScalar(showRgbColor.Blue, showRgbColor.Green, showRgbColor.Red), 2);
+                            currentColorBlob++;
+                        //}
+                    }*/
+                    // Use timer to update UI blob count
+                    blobCount[colorRange] = (sumArea / (currentVideoFrame.Rows * currentVideoFrame.Cols))*100;
+                }
+                fromCamPictureBox.Image = tempImage.Bitmap;
+            }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
         }
 
         private void rewriteColorList()
@@ -137,6 +217,7 @@ namespace clickerByColor
 
                 Image<Hsv, byte> hsvImage = new Image<Hsv, byte>(1, 1, new Hsv((interestedColors[colorNo].Min + interestedColors[colorNo].Max) / 2.0, 255, 255));
                 Image<Rgb, byte> rgbImage = hsvImage.Convert<Rgb, byte>();
+               
                 Rgb showRgbColor = rgbImage[0, 0];
                 interestedColorList.Items[colorNo].SubItems[1].BackColor = Color.FromArgb((int)showRgbColor.Red, (int)showRgbColor.Green, (int)showRgbColor.Blue);
             }
@@ -148,7 +229,9 @@ namespace clickerByColor
                 interestedColors.RemoveAt(interestedColorList.SelectedIndices[0]);
                 blobCount.Remove(interestedColorList.SelectedIndices[0]);
                 interestedColorList.Items.RemoveAt(interestedColorList.SelectedIndices[0]);
+                segmentOneShot();
                 rewriteColorList();
+                
             }
         }
 

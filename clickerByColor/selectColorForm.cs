@@ -60,7 +60,7 @@ namespace clickerByColor
             Mat segmentationResultMat = new Mat();
             Mat hsvImage = new Mat();
             Mat blurOriginalCurrentVideoFrame = new Mat();
-            CvInvoke.MedianBlur(originalCurrentVideoFrame, blurOriginalCurrentVideoFrame, 7);
+            CvInvoke.MedianBlur(originalCurrentVideoFrame, blurOriginalCurrentVideoFrame, 5);
             //CvInvoke.Blur(originalCurrentVideoFrame, blurOriginalCurrentVideoFrame, new Size(3, 3),new Point(-1,-1));
 
             CvInvoke.CvtColor(originalCurrentVideoFrame, hsvImage, ColorConversion.Bgr2Hsv);
@@ -94,7 +94,7 @@ namespace clickerByColor
         private Mat keepAspectRatioResize(Mat inputImage, Size targetSize, int padColor = 0)
         {
             Mat resizedOutputImage = new Mat();
-
+            
             double h1 = targetSize.Width * (inputImage.Rows / (double)inputImage.Cols);
             double w2 = targetSize.Height * (inputImage.Cols / (double)inputImage.Rows);
             if (h1 <= targetSize.Height)
