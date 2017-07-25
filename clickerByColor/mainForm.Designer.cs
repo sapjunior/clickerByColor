@@ -251,7 +251,8 @@
             // 
             // openImageFileDialog
             // 
-            this.openImageFileDialog.FileName = "openFileDialog1";
+            this.openImageFileDialog.Filter = "\"Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif" +
+    "; *.png\"";
             // 
             // columnHeader1
             // 

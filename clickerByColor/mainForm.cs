@@ -145,9 +145,9 @@ namespace clickerByColor
             {
                 try
                 {
-                    currentVideoFrame = new Mat(openImageFileDialog.FileName);
+                    Mat tempFrame = new Mat(openImageFileDialog.FileName);
                     // Select Area!!!
-                    defineArea newDefineArea = new defineArea(currentVideoFrame);
+                    defineArea newDefineArea = new defineArea(tempFrame);
                     if(newDefineArea.ShowDialog() == DialogResult.OK)
                     {
                         currentVideoFrame = newDefineArea.segmentedArea.Clone();
@@ -257,7 +257,7 @@ namespace clickerByColor
         }
         private void removeInterestedColorBtn_Click(object sender, EventArgs e)
         {
-            if(interestedColorList.Items.Count > 0 && interestedColorList.Items[interestedColorList.SelectedIndices[0]] !=null)
+            if(interestedColorList.Items.Count > 0 && interestedColorList.SelectedIndices.Count > 0)
             {
 
                  interestedColors.RemoveAt(interestedColorList.SelectedIndices[0]);
